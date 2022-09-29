@@ -14,6 +14,8 @@ create database Insumos;
 		primary key(IdInsumo),
 		);
 
+
+
 #Foreign key insumo padre y tipo medida
 	Alter table InsumoPadre add Constraint FkMedidaPadre foreign key(IdTipoMedida)
 	references TipoMedida(IdTipoMedida);
@@ -32,17 +34,26 @@ create database Insumos;
 
 #foreign ket tipo medida
 	alter table InsumoHijo add Constraint FkTipoMedidaHijo foreign key(IdTipoMedida)
-	references TipoMedida(IdTipoMedida);
+	reference(s TipoMedida(IdTipoMedida);
+	
+		create table Proveedor(
+			IdProveedor int(253) not null,
+			Nit  Bigint(253) not null,
+			NombreProveedor varchar(40) not null,
+			IdCiudad int(253) not null,
+			Direccion varchar(60) not null,
+			Telefono varchar(15) not null,
+			primary key(IdProveedor)
+		);
 
 	create table EstandarCompraInsumosProveedor(
 		IdEstandarCompraInsumosProveedor int(253) not null auto_increment,
 		IdInsumoHijo int(253) not null,
 		IdProveedor int(253) not null,
-		primary key(IdEstandar)
+		primary key(IdEstandar),
+		foreign key	IdInsumoHijo references InsumoHijo (IdInsumoHijo),
+		foreign key( IdProveedor) references Proveedor(IdProveedor)
 		);
-#Foreign key Insumo Hijo-Insumo Padre
-	Alter table InsumoHijoProveedor add constraint FKInsumoHijo_Padre foreign key(IdInsumoHijo)
-	references InsumoHijo
 
 
 	create table CompraMateriaPrimaEmpresa(
