@@ -1,4 +1,4 @@
-#Base de datos productos
+ #Base de datos productos
 
 create database Productos;
 	use Productos;
