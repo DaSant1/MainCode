@@ -57,6 +57,7 @@ create database Produccion;
 	create table EstadoProduccion(
 		IdEstado int(253) not null auto_increment,
 		Estado varchar(253)not null,
+		Fecha timestamp not null,
 		primary key(IdEstado)
 		);
 
@@ -138,4 +139,101 @@ create database Produccion;
 		Foreign key(IdProduccion) references Produccion(IdProduccion),
 		Foreign key(IdUsoInsumoReal) references UsoInsumosReal(IdConsumoReal),
 		Foreign key (IdRazonExceso) references Razon(IdRazonExceso)
+		);
+
+	create table InventarioProdTerminados(
+		IdInvProductosTerminados int(253) not null,
+		IdProduccion int(253) not null,
+		IdProduccionUnitaria int(253) not null,
+		IdCliente int(253) not null,
+		FechaEntrad date not null,
+		Letra varchar(3) not null,
+		LoteProduccion varchar(15) not null,
+		FechaSalida date not null,
+		DuracionDias int(25) not null,
+		Bodega int(20) not null,
+		primary key(IdInvProductosTerminados),
+		Foreign key (Produccion ) references Produccion(IdProduccion),
+		Foreign key (IdProduccionUnitaria) REFERENCES ProduccionUnitaria(IdProduccionUnitaria)
+		);
+
+	Create table DefectoProductoNoConformes(
+		IdDefectoProductoNoConforme int(253) not null auto_increment,
+		Defecto varchar(30) not null,
+		primary key	(IdProductoNoConforme)
+		);
+
+	create table Causas(
+		IdCausa int(253) not null,
+		Causa varchar(40) not null,
+		primary key (IdCausa)
+		);
+
+	create table ProductosNoConformes(
+		IdProductoNoConforme int(253) not null,
+		IdProduccionUnitaria int(253) not null,
+		IdProducto int(253) not null,
+		NumeroItem int(253) not null,
+		Fecha timestamp not null,
+		Recuperable boolean not null default false,
+		IdAreaDetectada int(253) not null,
+		Lote varchar(30) not null,
+		primary key(IdProductoNoConforme),
+		Foreign key (IdProduccionUnitaria) references ProduccionUnitaria(IdProduccionUnitaria),
+		);
+
+	create table NoConformidad_CausaDefecto(
+		IdDefecto int(253) not null,
+		IdCausa int(253) not null,
+		IdProductoNoConforme int (253) not null,
+		Foreign key	(IdPosibleDefecto) references DefectoProductoNoConformes(IdDefectoProductoNoConforme),
+		foreign key (IdCausa) references Causas(IdCausa),
+		foreign key (IdProductoNoConforme) references ProductosNoConformes(IdProductoNoConforme)
+		);
+
+	create table ProductosRecuperacionEnProceso(
+		IdProductoRecuperado int(253) not null auto_increment,
+		IdProductoNoConforme int(253) not null,
+		NumeroItem int(253) not null,
+		IdProducto int(253) not null,
+		primary key (IdProductoRecuperado),
+		Foreign key(IdProductoNoConforme) references ProductosNoConformes(IdProductoNoConforme)
+		);
+
+	create table ProcesoRecuperacion(
+		IdProcesoRecuperacion int(253) not null auto_increment,
+		ProcesoRecuperacion varchar(40) not null,
+		primary key	(IdProcesoRecuperacion)
+		);
+
+	create table ProcesoRecuperacionProductos(
+		IdProductoReparado int(253) not null,
+		IdProcesoRecuperacion int(253) not null,
+		FechaInicio timestamp not null,
+		FechaFinProceso timestamp not null,
+		Costo Bigint not null,
+		primary key(IdProductoReparado),
+		Foreign key(IdProcesoRecuperacion) references ProcesoRecuperacion(IdProcesoRecuperacion),
+		Foreign key(IdProductoReparado) references ProductosRecuperacionEnProceso(IdProductoRecuperado)
+		);
+
+	create table InspeccionEmpleado(
+		IdInspeccion int(253) not null auto_increment,
+		IdProductoRecuperado int(253) not null,
+		Autorizacion boolean not null default false,
+		IdEmpleado int(253) not null,
+		primary key(IdInspeccion),
+		Foreign key	(IdProductoRecuperado) references ProcesoRecuperacionProductos(IdProcesoReparado),
+		Foreign key(IdProductoRecuperado) references ProductosRecuperacionEnProceso(IdProductoRecuperado)
+		);
+
+	create table InventarioProductosRecuperados(
+		IdInventario int(253) not null auto_increment,
+		IdInspeccion int(253) not null,
+		IdProductoRecuperado int(253) not null,
+		NumeroItem int(253) not null,
+		Letra varchar(3) not null,
+		primary key(IdInventario),
+		foreign key (IdInspeccion) references InspeccionEmpleado(IdInspeccion),
+		foreign key (IdProductoRecuperado) references ProductosRecuperacionEnProceso(IdProductoRecuperado) 
 		);
