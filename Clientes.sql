@@ -3,17 +3,17 @@ create database Clientes;
 	use Clientes;
 
 create table InfoTributacion(
-	IdTributacion int(253) not null,
+	IdTributacion int(253) not null auto_increment,
 	TipoTributacion varchar(14) not null,
 	primary key(IdTributacion)
 );
 
 create table CLiente(
-	IdCliente int(253) not null,
+	IdCliente int(253) not null auto_increment,
 	Nit Bigint(253) not null default 0,
 	Nombre varchar(24) not null,
 	Correo varchar(30) not null,
-	IdCiudad int(253) not null
+	IdCiudad int(253) not null,
 	primary key	(IdCliente)
 );
 

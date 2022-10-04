@@ -7,9 +7,10 @@ create database Despachos;
 		IdCliente int(253) not null,
 		IdEmpleado int(253) not null,
 		IdInvProductosTerminados int(253) not null,
+		letra varchar(3) not null,
 		FechaAutorizacion timestamp not null,
 		Autorizacion boolean not null default True,
-		Comentario varchar(253) not null,
+		Comentario varchar(90) not null,
 		IdPedido int(253) not null,
 		primary key	(IdAutorizacion) 
  		);
@@ -21,12 +22,12 @@ create database Despachos;
 		IdCliente int(253) not null,
 		CantidadRetrasada int(253) not null,
 		FechaAtraso timestamp not null,
-		NuevaFechaReprogramacion date not null,
+		NuevaFechaReprogramacion timestamp not null,
 		primary key(IdAtraso)
 		);
 
 	create table IdTransportadora(
-		IdTransportadora int(253) not null,
+		IdTransportadora int(253) not null auto_increment,
 		Transportadora varchar(30) not null,
 		primary key(IdTransportadora)
 		);
@@ -43,10 +44,10 @@ create database Despachos;
 		CantidadCajas int(253) not null,
 		Factura varchar(30) not null,
 		Remision varchar(30) not null,
-		FechaPedido date not null,
+		FechaPedido timestamp not null,
 		FechaDespacho timestamp not null,
 		primary key(IdDespacho),
-		foreign key IdAutorizacionSalida references AutorizacionSalida(IdAutorizacion),
-		Foreign key IdCliente references AutorizacionSalida(IdCliente),
-		Foreign key IdInvProductosTerminados references AutorizacionSalida(IdInvProductosTerminados)
+		foreign key (IdAutorizacionSalida) references AutorizacionSalida(IdAutorizacion),
+		Foreign key (IdCliente) references AutorizacionSalida(IdCliente),
+		Foreign key (IdInvProductosTerminados) references AutorizacionSalida(IdInvProductosTerminados)
 		);

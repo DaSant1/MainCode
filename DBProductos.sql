@@ -3,11 +3,6 @@
 create database Productos;
 	use Productos;
 
-	create table DescripcionProducto(
-		IdDescripcion int(253) not null auto_increment,
-		Descripcion varchar(50)not null default "no aplica",
-		primary key(IdDescripcion)
-		);
 
 	create table TipoLinea(
 		IdTipoLinea int(253) not null auto_increment,
@@ -25,11 +20,11 @@ create database Productos;
 		IdProducto int(253) not null auto_increment,
 		IdTipoFamilia int(253) not null default 0,
 		IdTipoLinea int(253) not null default 0,
-		IdDescripcion int(253) not null default 0,
+		IdDescripcion varchar() not null,
+		NombreProducto varchar(50) not null,
 		primary key(IdProducto),
 		Foreign key	(IdTipoFamilia) REFERENCES TipoFamilia(IdTipoFamilia),
-		Foreign key(IdTipoLinea) REFERENCES TipoLinea(IdTipoLinea),
-		Foreign key (IdDescripcion) references DescripcionProducto(IdDescripcion)
+		Foreign key(IdTipoLinea) REFERENCES TipoLinea(IdTipoLinea)
 		);
 	create table ValProductClient(
 		IdValor int(253) not null,
